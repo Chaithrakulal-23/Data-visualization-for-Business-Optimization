@@ -9,7 +9,7 @@ The dashboard tracks **inventory demand, availability, supply shortages, and fin
 
 ---
 
-## 🗄️ Data Sources
+##  Data Sources
 
 | Environment | Database |
 |-------------|----------|
@@ -90,10 +90,10 @@ SELECT * FROM New_table1;
 - Opened **Power Query Editor** → checked **Column Profiling**, **Column Quality**, **Column Distribution**
 - Fixed **data types** where needed
 - Applied a **custom background** to the report canvas
-
+![Connecting SQL Server](https://github.com/Chaithrakulal-23/Data-visualization-for-Business-Optimization/blob/56f0c64673c77a194fd787d53604d10a81906dfc/newtable1.png)
 ---
 
-## 📐 DAX Measures & Calculated Columns
+##  DAX Measures & Calculated Columns
 
 ### 📁 Base Measures
 
@@ -158,10 +158,10 @@ SUMX(
 Average Loss Per Day = 
 DIVIDE([Total Loss], [Total Number of Days])
 ```
-
+![Measures](https://github.com/Chaithrakulal-23/Data-visualization-for-Business-Optimization/blob/56f0c64673c77a194fd787d53604d10a81906dfc/newtable1.png)
 ---
 
-## 📊 Dashboard Pages & KPIs
+##  Dashboard Pages & KPIs
 
 ### Page 1 — Supply Overview
 
@@ -187,7 +187,7 @@ DIVIDE([Total Loss], [Total Number of Days])
 
 ---
 
-## 🔄 Migration: Test → Production
+##  Migration: Test → Production
 
 | Stage | Details |
 |-------|---------|
@@ -197,8 +197,10 @@ DIVIDE([Total Loss], [Total Number of Days])
 | Schema | `Order_Date`, `Product_ID`, `Availability`, `Demand`, `Product_Name`, `Unit_Price` |
 
 ---
+![Measures](https://github.com/Chaithrakulal-23/Data-visualization-for-Business-Optimization/blob/56f0c64673c77a194fd787d53604d10a81906dfc/newtable1.png)
+![Measures](https://github.com/Chaithrakulal-23/Data-visualization-for-Business-Optimization/blob/56f0c64673c77a194fd787d53604d10a81906dfc/newtable1.png)
 
-## 💡 Key Insights
+##  Key Insights
 
 - **Supply Shortage** highlights products where demand consistently exceeds availability
 - **Total Loss** quantifies the financial impact of stock-outs using unit price
