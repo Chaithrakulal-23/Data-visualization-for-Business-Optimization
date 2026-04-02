@@ -1,0 +1,1 @@
+SELECT * FROM prod.new_table1;
