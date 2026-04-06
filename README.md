@@ -198,7 +198,7 @@ Snap of Advanced Editor – MySQL Source (Query1):
 
 Snap of Advanced Editor – Demand/Availability Data after source swap:
 
-![Advanced Editor - Demand/Availability Data Updated](m2_advanced_editor.png)
+![Advanced Editor - Demand/Availability Data Updated](https://github.com/Chaithrakulal-23/Data-visualization-for-Business-Optimization/blob/008bb574261e7dd903b028aefb9cff828329df86/M2ADV.png)
 
 - **Step 18 :** Validated the migrated data against the original SSMS report to confirm row counts, column values, and KPI figures matched.
 
