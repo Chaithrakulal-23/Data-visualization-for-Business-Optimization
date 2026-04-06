@@ -119,7 +119,7 @@ Snap of Measures Table in the Data pane:
 
 Snap of KPI Page 1 (Power BI Desktop):
 
-![KPI Page 1 - Desktop](page1_desktop.png)
+![KPI Page 1 - Desktop](https://github.com/Chaithrakulal-23/Data-visualization-for-Business-Optimization/blob/e2bb6966092216cd429ca96274d6c1f028010131/page1d.png)
 
 Snap of KPI Page 1 (Power BI Service – Published):
 
