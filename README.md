@@ -74,7 +74,7 @@ SELECT * FROM New_table1;
 
 Snap of `New_table1` connection in Power BI (SQL Server – SSMS):
 
-![New Table 1 - SQL Server Connection](newtable1_ssms.png)
+![New Table 1 - SQL Server Connection](https://github.com/Chaithrakulal-23/Data-visualization-for-Business-Optimization/blob/05da95fd975838b0ec73d965f1a482178be63a60/newtable1.png)
 
 ---
 
