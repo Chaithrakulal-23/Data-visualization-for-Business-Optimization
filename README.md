@@ -123,7 +123,7 @@ Snap of KPI Page 1 (Power BI Desktop):
 
 Snap of KPI Page 1 (Power BI Service – Published):
 
-![KPI Page 1 - Published](page1_published.png)
+![KPI Page 1 - Published](https://github.com/Chaithrakulal-23/Data-visualization-for-Business-Optimization/blob/ac5450d28649d97c1dc366c453c4181ffa7c44e2/page1p.png)
 
 - **Step 10 :** Created a calculated column for Loss/Profit analysis:
 
