@@ -108,7 +108,7 @@ Total Supply Shortage = [Total Demand] - [Total Availability]
 
 Snap of Measures Table in the Data pane:
 
-![DAX Measures Table](dax_measures.png)
+![DAX Measures Table](https://github.com/Chaithrakulal-23/Data-visualization-for-Business-Optimization/blob/b633d017c97a35b48a9d129b2f636e236eba8868/dax.png)
 
 - **Step 9 :** Built **KPI Page 1** using Card visuals for:
   - Average Demand Per Day
