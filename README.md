@@ -176,7 +176,7 @@ Snap of MySQL Workbench – Inventory Dataset (`prod` schema):
 
 Snap of MySQL Workbench – Products Table (`prod` schema):
 
-![MySQL Products Table](mysql_products.png)
+![MySQL Products Table](https://github.com/Chaithrakulal-23/Data-visualization-for-Business-Optimization/blob/e7f993592ba451eb4054dc11d44c1b6b4eb94aca/mysqlprod.png)
 
 - **Step 15 :** Connected Power BI Desktop to the **MySQL Server** (`localhost`, database: `PROD`) using the MySQL database connector with the SQL statement `SELECT * FROM prod.new_table1`.
 
