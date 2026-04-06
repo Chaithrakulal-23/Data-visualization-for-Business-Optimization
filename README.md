@@ -156,7 +156,7 @@ Average Loss Per Day = DIVIDE([Total Loss], [Total Number of Days])
 
 Snap of KPI Page 2 (Power BI Desktop):
 
-![KPI Page 2 - Desktop](page2_desktop.png)
+![KPI Page 2 - Desktop](https://github.com/Chaithrakulal-23/Data-visualization-for-Business-Optimization/blob/cde879531e79ba0db9c0de3a06a12c9e176baf3b/page2d.png)
 
 Snap of KPI Page 2 (Power BI Service – Published):
 
