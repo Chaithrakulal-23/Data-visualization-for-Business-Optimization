@@ -86,7 +86,7 @@ Snap of `New_table1` connection in Power BI (SQL Server – SSMS):
 
 Snap of Column Profiling in Power Query Editor:
 
-![Column Profiling](column_profiling.png)
+![Column Profiling](https://github.com/Chaithrakulal-23/Data-visualization-for-Business-Optimization/blob/dae5b02dfcb99f2fa78a93f84bf06143c21763d0/columnprofiling.png)
 
 - **Step 7 :** Reviewed data types and corrected them where needed. Added a background theme to the report canvas.
 
