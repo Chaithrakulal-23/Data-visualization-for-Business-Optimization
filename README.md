@@ -172,7 +172,7 @@ Snap of KPI Page 2 (Power BI Service – Published):
 
 Snap of MySQL Workbench – Inventory Dataset (`prod` schema):
 
-![MySQL Inventory Dataset](mysql_inventory.png)
+![MySQL Inventory Dataset](https://github.com/Chaithrakulal-23/Data-visualization-for-Business-Optimization/blob/6323a7e2099f5693b6be12152a040b43b139c2a3/mysqlenv.png)
 
 Snap of MySQL Workbench – Products Table (`prod` schema):
 
