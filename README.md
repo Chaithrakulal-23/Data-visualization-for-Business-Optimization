@@ -192,7 +192,7 @@ Source = MySQL.Database("localhost", "PROD", [ReturnSingleDatabase=true, Query="
 
 Snap of Advanced Editor – MySQL Source (Query1):
 
-![Advanced Editor - MySQL Source](m1_advanced_editor.png)
+![Advanced Editor - MySQL Source](https://github.com/Chaithrakulal-23/Data-visualization-for-Business-Optimization/blob/c8cbf191e15c288ad837f19ef64d029fb4b73290/M1ADV.png)
 
 - **Step 17 :** Navigated to the existing `Demand/Availability Data` query (originally pointing to SSMS), opened its **Advanced Editor**, and replaced the `Source` line with the copied MySQL source code. Validated — no syntax errors detected.
 
