@@ -160,7 +160,7 @@ Snap of KPI Page 2 (Power BI Desktop):
 
 Snap of KPI Page 2 (Power BI Service – Published):
 
-![KPI Page 2 - Published](page2_published.png)
+![KPI Page 2 - Published](https://github.com/Chaithrakulal-23/Data-visualization-for-Business-Optimization/blob/c1aa35375ff98a1ae856d7e65f6ee925c95c3d70/page2p.png)
 
 - **Step 13 :** Published the report to **Power BI Service** under the **Test Environment Workspace**.
 
