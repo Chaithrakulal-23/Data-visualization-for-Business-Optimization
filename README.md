@@ -182,7 +182,7 @@ Snap of MySQL Workbench – Products Table (`prod` schema):
 
 Snap of MySQL database connection dialog in Power BI:
 
-![Connect to MySQL](connect_mysql.png)
+![Connect to MySQL](https://github.com/Chaithrakulal-23/Data-visualization-for-Business-Optimization/blob/551d56a503813368ce07f2b7df433313183d9fb3/CONNECTMYSQL1.png)
 
 - **Step 16 :** Opened the **Advanced Editor** in Power Query for the new MySQL query (`Query1`) and copied the `Source` step:
 
