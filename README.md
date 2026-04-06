@@ -1,209 +1,248 @@
-# Inventory Demand & Supply Dashboard — SQL Server to MySQL Migration
- Dashboard Link - https://app.powerbi.com/links/AZhrc98Jf3?ctid=51697115-1ecd-42b5-b509-2d62c3919f76&pbi_source=linkShare&bookmarkGuid=4a27c216-8284-4f79-aa2b-a070e1e7c2c2
+# Inventory KPI Dashboard – Test to Production Migration
 
-##  Project Overview
+### Dashboard Link 
+### SQL Server Data Source : https://app.powerbi.com/links/s0OXEFh-Mf?ctid=51697115-1ecd-42b5-b509-2d62c3919f76&pbi_source=linkShare&bookmarkGuid=5fa3bb5c-afe8-436c-b627-0687ff1db95e
+### MYSQL Daatabase Data Source : https://app.powerbi.com/links/AZhrc98Jf3?ctid=51697115-1ecd-42b5-b509-2d62c3919f76&pbi_source=linkShare&bookmarkGuid=172a4f62-7d72-48e9-981a-bd8376e2c995
+---
 
-This project involves **transitioning Power BI reports from a SQL Server (Test Environment) to a MySQL (Production) data source**.
+## Problem Statement
 
-The dashboard tracks **inventory demand, availability, supply shortages, and financial loss/profit** across products and dates — helping businesses make data-driven inventory decisions.
+This dashboard provides real-time visibility into inventory performance by tracking demand vs. availability across products and dates. It helps operations and supply chain teams identify supply shortages, financial losses, and profit trends at a daily level.
+
+Since supply shortages directly impact revenue, the dashboard enables stakeholders to act on shortfall patterns early. By transitioning the report from a **SQL Server (SSMS) test environment** to a **MySQL production environment**, the solution is now scalable, reliable, and ready for live operational use.
 
 ---
 
-##  Data Sources
+## Data Sources
 
-| Environment | Database |
-|-------------|----------|
-| Test | MS SQL Server (MSSQL Workbench) |
-| Production | MySQL Database |
+| Dataset | Columns |
+|---|---|
+| Test Environment Inventory Dataset | `Order_Date_DD_MM_YYYY`, `Product_ID`, `Availability`, `Demand` |
+| Products | `Product_ID`, `Product_Name`, `Unit_Price` |
 
-### Dataset 1 — Test Environment Inventory Dataset
+Both datasets were originally in Excel format and imported into **Microsoft SQL Server (SSMS)** for the test environment, then migrated to **MySQL** for production.
 
-| Column | Description |
-|--------|-------------|
-| `Order_Date_DD_MM_YYYY` | Date of the order |
-| `Product_ID` | Unique product identifier |
-| `Availability` | Units available |
-| `Demand` | Units demanded |
-
-### Dataset 2 — Products Dataset
-
-| Column | Description |
-|--------|-------------|
-| `Product_ID` | Unique product identifier |
-| `Product_Name` | Name of the product |
-| `Unit_Price` | Price per unit |
-
-![MYSQL Workbench](your-image-link-here)
 ---
 
 ## Steps Followed
 
-### Step 1 — Database Setup (MSSQL)
+### Phase 1 – Test Environment Setup (SQL Server / SSMS)
 
-Both Excel files were imported into MS SQL Server and the following database was created:
+- **Step 1 :** Created a test database in SSMS and imported the two Excel datasets as tables.
 
 ```sql
 CREATE DATABASE test_env;
 USE test_env;
-```
 
-### Step 2 — Dataset Validation
-
-```sql
--- View raw tables
 SELECT * FROM [dbo].[Products];
 SELECT * FROM [dbo].[Test Environment Inventory Dataset];
+```
 
--- Check distinct values
-SELECT DISTINCT product_id FROM [dbo].[Products];
+- **Step 2 :** Validated dataset values by running exploratory queries.
+
+```sql
+SELECT DISTINCT product_id FROM Products;
 SELECT DISTINCT product_id FROM [dbo].[Test Environment Inventory Dataset];
 SELECT DISTINCT Order_Date_DD_MM_YYYY FROM [dbo].[Test Environment Inventory Dataset];
-SELECT DISTINCT Availability FROM [dbo].[Test Environment Inventory Dataset];
+SELECT DISTINCT [Availability] FROM [dbo].[Test Environment Inventory Dataset];
 SELECT DISTINCT Demand FROM [dbo].[Test Environment Inventory Dataset];
 ```
 
-### Step 3 — Join & Create New Table
+- **Step 3 :** Performed a `LEFT JOIN` between the inventory and products tables on `Product_ID` to enrich the dataset.
 
-A joined table combining both datasets was created for use in Power BI:
+```sql
+SELECT a.[Order_Date_DD_MM_YYYY], a.Product_ID, a.Demand,
+       b.Product_Name, b.Unit_Price
+FROM [dbo].[Test Environment Inventory Dataset] AS a
+LEFT JOIN [dbo].[Products] AS b
+ON a.Product_ID = b.Product_ID;
+```
+
+- **Step 4 :** Inserted the joined result into a new consolidated table `New_table1` for direct Power BI consumption.
 
 ```sql
 SELECT * INTO New_table1 FROM (
-    SELECT 
-        a.[Order_Date_DD_MM_YYYY],
-        a.Product_ID,
-        a.Availability,
-        a.Demand,
-        b.Product_Name,
-        b.Unit_Price
+    SELECT a.[Order_Date_DD_MM_YYYY], a.Product_ID, a.Availability, a.Demand,
+           b.Product_Name, b.Unit_Price
     FROM [dbo].[Test Environment Inventory Dataset] AS a
     LEFT JOIN [dbo].[Products] AS b
-        ON a.Product_ID = b.Product_ID
+    ON a.Product_ID = b.Product_ID
 ) X;
 
--- Verify the new table
 SELECT * FROM New_table1;
 ```
 
-### Step 4 — Power BI Desktop
+Snap of `New_table1` connection in Power BI (SQL Server – SSMS):
 
-- Connected to SQL Server and imported `New_table1`
-- Opened **Power Query Editor** → checked **Column Profiling**, **Column Quality**, **Column Distribution**
-- Fixed **data types** where needed
-- Applied a **custom background** to the report canvas
-![Connecting SQL Server](https://github.com/Chaithrakulal-23/Data-visualization-for-Business-Optimization/blob/56f0c64673c77a194fd787d53604d10a81906dfc/newtable1.png)
+![New Table 1 - SQL Server Connection](newtable1_ssms.png)
+
 ---
 
-##  DAX Measures & Calculated Columns
+### Phase 2 – Power BI Report Development
 
-### 📁 Base Measures
+- **Step 5 :** Loaded `New_table1` into Power BI Desktop using the **SQL Server** database connector.
+
+- **Step 6 :** Opened Power Query Editor. Under the **View** tab, enabled **Column Distribution**, **Column Quality**, and **Column Profile**. Set column profiling to **entire dataset**.
+
+Snap of Column Profiling in Power Query Editor:
+
+![Column Profiling](column_profiling.png)
+
+- **Step 7 :** Reviewed data types and corrected them where needed. Added a background theme to the report canvas.
+
+- **Step 8 :** Created the following **DAX Measures** in a dedicated `Measures Table`:
 
 ```dax
-Total Number of Days = 
-DISTINCTCOUNT('Demand/Availability Data'[Order_Date_DD_MM_YYYY].[Date])
+Total Number of Days = DISTINCTCOUNT('Demand/Availability Data'[Order_Date_DD_MM_YYYY].[Date])
+
+Total Demand = SUM('Demand/Availability Data'[Demand])
+
+Total Availability = SUM('Demand/Availability Data'[Availability])
+
+Average Demand Per Day = DIVIDE([Total Demand], [Total Number of Days])
+
+Average Availability Per Day = DIVIDE([Total Availability], [Total Number of Days])
+
+Total Supply Shortage = [Total Demand] - [Total Availability]
 ```
 
+Snap of Measures Table in the Data pane:
+
+![DAX Measures Table](dax_measures.png)
+
+- **Step 9 :** Built **KPI Page 1** using Card visuals for:
+  - Average Demand Per Day
+  - Average Availability Per Day
+  - Total Supply Shortage
+
+  Added **Product Name** and **Order Date** slicers/filters to this page.
+
+Snap of KPI Page 1 (Power BI Desktop):
+
+![KPI Page 1 - Desktop](page1_desktop.png)
+
+Snap of KPI Page 1 (Power BI Service – Published):
+
+![KPI Page 1 - Published](page1_published.png)
+
+- **Step 10 :** Created a calculated column for Loss/Profit analysis:
+
 ```dax
-Total Demand = 
-SUM('Demand/Availability Data'[Demand])
+LOSS/PROFIT = 'Demand/Availability Data'[Availability] - 'Demand/Availability Data'[Demand]
 ```
 
-```dax
-Total Availability = 
-SUM('Demand/Availability Data'[Availability])
-```
-
-### 📁 KPI Page 1 — Supply Measures
+- **Step 11 :** Created the following measures for **KPI Page 2**:
 
 ```dax
-Average Demand Per Day = 
-DIVIDE('Measures Table'[Total Demand], 'Measures Table'[Total Number of Days])
-```
-
-```dax
-Average Availability Per Day = 
-DIVIDE('Measures Table'[Total Availability], 'Measures Table'[Total Number of Days])
-```
-
-```dax
-Total Supply Shortage = 
-[Total Demand] - [Total Availability]
-```
-
-### 📁 Calculated Column
-
-```dax
-LOSS/PROFIT = 
-'Demand/Availability Data'[Availability] - 'Demand/Availability Data'[Demand]
-```
-
-### 📁 KPI Page 2 — Financial Measures
-
-```dax
-Total Loss = 
-SUMX(
+Total Loss = SUMX(
     FILTER('Demand/Availability Data', 'Demand/Availability Data'[LOSS/PROFIT] < 0),
     'Demand/Availability Data'[LOSS/PROFIT] * 'Demand/Availability Data'[Unit_Price]
 ) * -1
-```
 
-```dax
-Total Profit = 
-SUMX(
+Total Profit = SUMX(
     FILTER('Demand/Availability Data', 'Demand/Availability Data'[LOSS/PROFIT] > 0),
     'Demand/Availability Data'[LOSS/PROFIT] * 'Demand/Availability Data'[Unit_Price]
 )
+
+Average Loss Per Day = DIVIDE([Total Loss], [Total Number of Days])
 ```
 
-```dax
-Average Loss Per Day = 
-DIVIDE([Total Loss], [Total Number of Days])
+- **Step 12 :** Built **KPI Page 2** using Card visuals for:
+  - Total Profit
+  - Total Loss
+  - Average Daily Loss
+
+  Added **Product Name** and **Order Date** slicers/filters to this page.
+
+Snap of KPI Page 2 (Power BI Desktop):
+
+![KPI Page 2 - Desktop](page2_desktop.png)
+
+Snap of KPI Page 2 (Power BI Service – Published):
+
+![KPI Page 2 - Published](page2_published.png)
+
+- **Step 13 :** Published the report to **Power BI Service** under the **Test Environment Workspace**.
+
+---
+
+### Phase 3 – Production Migration (SQL Server → MySQL)
+
+- **Step 14 :** Imported the production datasets into **MySQL Workbench** under the `prod` schema. Verified data integrity by querying both tables.
+
+Snap of MySQL Workbench – Inventory Dataset (`prod` schema):
+
+![MySQL Inventory Dataset](mysql_inventory.png)
+
+Snap of MySQL Workbench – Products Table (`prod` schema):
+
+![MySQL Products Table](mysql_products.png)
+
+- **Step 15 :** Connected Power BI Desktop to the **MySQL Server** (`localhost`, database: `PROD`) using the MySQL database connector with the SQL statement `SELECT * FROM prod.new_table1`.
+
+Snap of MySQL database connection dialog in Power BI:
+
+![Connect to MySQL](connect_mysql.png)
+
+- **Step 16 :** Opened the **Advanced Editor** in Power Query for the new MySQL query (`Query1`) and copied the `Source` step:
+
+```m
+Source = MySQL.Database("localhost", "PROD", [ReturnSingleDatabase=true, Query="SELECT * FROM prod.new_table1;"])
 ```
-![Measures](https://github.com/Chaithrakulal-23/Data-visualization-for-Business-Optimization/blob/56f0c64673c77a194fd787d53604d10a81906dfc/newtable1.png)
----
 
-##  Dashboard Pages & KPIs
+Snap of Advanced Editor – MySQL Source (Query1):
 
-### Page 1 — Supply Overview
+![Advanced Editor - MySQL Source](m1_advanced_editor.png)
 
-| KPI | Visual |
-|-----|--------|
-| Average Demand Per Day | Card |
-| Average Availability Per Day | Card |
-| Total Supply Shortage | Card |
+- **Step 17 :** Navigated to the existing `Demand/Availability Data` query (originally pointing to SSMS), opened its **Advanced Editor**, and replaced the `Source` line with the copied MySQL source code. Validated — no syntax errors detected.
 
-> **Filters Applied:** Product Name, Order Date
+Snap of Advanced Editor – Demand/Availability Data after source swap:
 
----
+![Advanced Editor - Demand/Availability Data Updated](m2_advanced_editor.png)
 
-### Page 2 — Financial Performance
+- **Step 18 :** Validated the migrated data against the original SSMS report to confirm row counts, column values, and KPI figures matched.
 
-| KPI | Visual |
-|-----|--------|
-| Total Loss | Card |
-| Total Profit | Card |
-| Average Daily Loss | Card |
+- **Step 19 :** Published the updated report to a separate **Production Workspace** in Power BI Service.
 
-> **Filters Applied:** Product Name, Order Date
+> **Two workspaces were maintained:**
+> - `Test Workspace` → SSMS (SQL Server) data source
+> - `Production Workspace` → MySQL data source
 
 ---
 
-##  Migration: Test → Production
+## KPI Summary
 
-| Stage | Details |
-|-------|---------|
-| Source (Test) | MS SQL Server — `New_table1` |
-| Target (Production) | MySQL Database |
-| Change | Update Power BI data source connection from MSSQL to MySQL |
-| Schema | `Order_Date`, `Product_ID`, `Availability`, `Demand`, `Product_Name`, `Unit_Price` |
+### Page 1 – Supply Overview
+
+| KPI | Value | Description |
+|---|---|---|
+| Average Demand Per Day | 48.65 | Mean daily units demanded across all products |
+| Average Availability Per Day | 24.70 | Mean daily units available across all products |
+| Total Supply Shortage | 61K | Aggregate gap between demand and availability |
+
+### Page 2 – Financial Performance
+
+| KPI | Value | Description |
+|---|---|---|
+| Total Profit | 301K | Revenue earned from surplus availability (excess × unit price) |
+| Total Loss | 8M | Revenue lost due to unmet demand (shortage × unit price) |
+| Average Daily Loss | 2.97K | Mean financial loss per day |
 
 ---
-![Measures](https://github.com/Chaithrakulal-23/Data-visualization-for-Business-Optimization/blob/56f0c64673c77a194fd787d53604d10a81906dfc/newtable1.png)
-![Measures](https://github.com/Chaithrakulal-23/Data-visualization-for-Business-Optimization/blob/56f0c64673c77a194fd787d53604d10a81906dfc/newtable1.png)
 
-##  Key Insights
+## Filters Available
 
-- **Supply Shortage** highlights products where demand consistently exceeds availability
-- **Total Loss** quantifies the financial impact of stock-outs using unit price
-- **Total Profit** captures surplus inventory value where availability exceeds demand
-- **Average Loss Per Day** provides a normalized daily view for trend monitoring
-- Filters by **Product Name** and **Order Date** allow granular drill-down on both pages
+Both pages include the following interactive filters:
+
+- **Product Name** – Filter KPIs by individual product
+- **Order Date** – Filter KPIs by specific date range
+
+---
+
+## Insights
+
+- Supply shortages can be identified at the product level, enabling targeted restocking decisions.
+- The Loss/Profit column flags days where availability fell short of (loss) or exceeded (profit) demand.
+- Total Loss (8M) far exceeds Total Profit (301K), indicating a critical and persistent supply shortage problem across the inventory.
+- Average Daily Loss of 2.97K highlights the ongoing financial impact of unmet demand every single day.
+- Migrating to MySQL ensures the dashboard runs on live production data, making KPIs operationally relevant.
